@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>NSOperation 与 Dispatch Queues 学习笔记 | 旧城</title>
+  <meta name="description" content="{{theme.description}}" />
+  <meta name="keywords" content="{{theme.keywords}}" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文为 NSOperation 和 Dispatch Queues 的学习笔记，参考资料为iOS 并发：从 NSOperation 和 Dispatch Queues 开始，文章基本上可以算是这篇文章的一个概括，将各个函数的用法摘录下来了，对于学习过这方面内容的人可以起到快速回顾的作用。
+如果可能的话，以后会再添加关于这方面的内容到这篇文章中。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NSOperation 与 Dispatch Queues 学习笔记">
+<meta property="og:url" content="http://zhuscat.com/2016/01/14/note-of-nsoperation-and-dispatch-queues/index.html">
+<meta property="og:site_name" content="旧城">
+<meta property="og:description" content="本文为 NSOperation 和 Dispatch Queues 的学习笔记，参考资料为iOS 并发：从 NSOperation 和 Dispatch Queues 开始，文章基本上可以算是这篇文章的一个概括，将各个函数的用法摘录下来了，对于学习过这方面内容的人可以起到快速回顾的作用。
+如果可能的话，以后会再添加关于这方面的内容到这篇文章中。">
+<meta property="og:updated_time" content="2016-01-14T14:52:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NSOperation 与 Dispatch Queues 学习笔记">
+<meta name="twitter:description" content="本文为 NSOperation 和 Dispatch Queues 的学习笔记，参考资料为iOS 并发：从 NSOperation 和 Dispatch Queues 开始，文章基本上可以算是这篇文章的一个概括，将各个函数的用法摘录下来了，对于学习过这方面内容的人可以起到快速回顾的作用。
+如果可能的话，以后会再添加关于这方面的内容到这篇文章中。">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<script src="https://use.typekit.net/eyf3hir.js"></script>
+  <script>try{Typekit.load({ async: false });}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+  <script>setLoadingBarProgress(20)</script>
+  
+  <div id="site-wrapper">
+    
+    <header id="header">
+	<div id="header-wrapper" class="clearfix">
+		<a id="logo" href="/">
+			<img src="/images/logo.png" />
+			<span id="site-desc">
+			  c'est la vie
+      </span>
+		</a>
+		<button id="site-nav-switch">
+	    <span class="icon icon-menu"></span>
+	  </button>
+	</div>
+	<aside id="site-menu">
+  	<nav>
+  		
+        <a href="/" class="nav-home nav">
+          Home
+        </a>
+      
+        <a href="/about" class="nav-about nav">
+          About
+        </a>
+      
+        <a href="/archives" class="nav-archives nav">
+          Archives
+        </a>
+      
+    </nav>
+	</aside>
+</header>
+    <script>setLoadingBarProgress(40);</script>
+    
+    <main id="main" role="main">
+      <article id="post-note-of-nsoperation-and-dispatch-queues"
+  class="post article white-box article-type-post"
+  itemscope itemprop="blogPost">
+	<h2 class="title">
+  	<a href="/2016/01/14/note-of-nsoperation-and-dispatch-queues/">
+    	NSOperation 与 Dispatch Queues 学习笔记
+    </a>
+  </h2>
+	<time>
+	  Jan 14, 2016
+	</time>
+	<section class="content">
+  	<div class="article-entry" itemprop="articleBody">
+    	<p>本文为 NSOperation 和 Dispatch Queues 的学习笔记，参考资料为<a href="http://swift.gg/2016/01/08/ios-concurrency-getting-started-with-nsoperation-and-dispatch-queues/" target="_blank" rel="external">iOS 并发：从 NSOperation 和 Dispatch Queues 开始</a>，文章基本上可以算是这篇文章的一个概括，将各个函数的用法摘录下来了，对于学习过这方面内容的人可以起到快速回顾的作用。</p>
+<p>如果可能的话，以后会再添加关于这方面的内容到这篇文章中。</p>
+<a id="more"></a>
+<h1 id="Grand-Central-Dispatch"><a href="#Grand-Central-Dispatch" class="headerlink" title="Grand Central Dispatch"></a>Grand Central Dispatch</h1><p>系统会缺省为每个应用提供一个串行队列和四个并发队列，这些队列全局可用，一个串行队列为主派发队列，在应用主线程执行任务，这个队列被用来更新应用的UI，四个并发队列（全局派发队列）可以使用 <code>dispatch_get_global_queue</code> 函数获得，它们有四个不同的优先级，分别是：</p>
+<ol>
+<li>DISPATCH_QUEUE_PRIORITY_HIGH</li>
+<li>DISPATCH_QUEUE_PRIORITY_DEFAULT</li>
+<li>DISPATCH_QUEUE_PRIORITY_LOW</li>
+<li>DISPATCH_QUEUE_PRIORITY_BACKGROUND</li>
+</ol>
+<h2 id="主派发队列获取"><a href="#主派发队列获取" class="headerlink" title="主派发队列获取"></a>主派发队列获取</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let mainQueue = dispatch_get_main_queue()</div></pre></td></tr></table></figure>
+<h2 id="创建自己的串行队列"><a href="#创建自己的串行队列" class="headerlink" title="创建自己的串行队列"></a>创建自己的串行队列</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let newSerialQueue = dispatch_queue_create(&quot;com.example.serialQueue&quot;, DISPATCH_QUEUE_SERIAL)</div></pre></td></tr></table></figure>
+<h2 id="全局派发队列获取"><a href="#全局派发队列获取" class="headerlink" title="全局派发队列获取"></a>全局派发队列获取</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)</div></pre></td></tr></table></figure>
+<h2 id="创建自己的并行队列"><a href="#创建自己的并行队列" class="headerlink" title="创建自己的并行队列"></a>创建自己的并行队列</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let newConcurrentQueue = dispatch_queue_create(&quot;com.example.concurrentQueue&quot;, DISPATCH_QUEUE_CONCURRENT)</div></pre></td></tr></table></figure>
+<h2 id="向队列提交任务"><a href="#向队列提交任务" class="headerlink" title="向队列提交任务"></a>向队列提交任务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dispatch_async(queue)&#123; () -&gt; Void in</div><div class="line">    // your task goes here</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="Operation-Queues"><a href="#Operation-Queues" class="headerlink" title="Operation Queues"></a>Operation Queues</h1><ol>
+<li>Operation Queues 不遵循先进先出，可以设置Operation的优先级，可以在Operation之间添加依赖。</li>
+<li>Oeration Queues 是并发执行的，但可以通过依赖关系让任务顺序执行。</li>
+<li>Opration Queues 是 NSOperationQueue类的实例，任务被封装在 NSOperation 的实例中。</li>
+</ol>
+<p><code>NSOperation</code> 是一个抽象类，只能使用其子类，iOS SDK中已经有两个可以使用的子类：</p>
+<ol>
+<li>NSBlockOperation</li>
+<li>NSInvocationOperation</li>
+</ol>
+<h2 id="用-NSOperationQueue-创建一条队列并执行任务"><a href="#用-NSOperationQueue-创建一条队列并执行任务" class="headerlink" title="用 NSOperationQueue 创建一条队列并执行任务"></a>用 <code>NSOperationQueue</code> 创建一条队列并执行任务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">let queue = NSOperationQueue()</div><div class="line"></div><div class="line">queue.addOperationWithBlock &#123; () -&gt; Void in</div><div class="line"></div><div class="line">    // some tasks</div><div class="line"></div><div class="line">    NSOperationQueue.mainQueue().addOperationWithBlock (&#123; () -&gt; Void in</div><div class="line">        //update UI</div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="用-NSOperationQueue-创建一条队列并以NSBlockOperation的形式添加任务"><a href="#用-NSOperationQueue-创建一条队列并以NSBlockOperation的形式添加任务" class="headerlink" title="用 NSOperationQueue 创建一条队列并以NSBlockOperation的形式添加任务"></a>用 <code>NSOperationQueue</code> 创建一条队列并以<code>NSBlockOperation</code>的形式添加任务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">let queue = NSOperationQueue()</div><div class="line"></div><div class="line">let operation1 = NSBlockOperation(block: &#123;</div><div class="line">    //some tasks</div><div class="line">    NSOperationQueue.mainQueue().addOperationWithBlock(&#123;</div><div class="line">        //update UI</div><div class="line">    &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line">queue.addOperation(operation1)</div></pre></td></tr></table></figure>
+<h2 id="设置-NSOperationQueue-的优先级"><a href="#设置-NSOperationQueue-的优先级" class="headerlink" title="设置 NSOperationQueue 的优先级"></a>设置 <code>NSOperationQueue</code> 的优先级</h2><p>可以将 <code>queuePriority</code> 属性设为以下值改变执行优先级</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public enum NSOperationQueuePriority : Int &#123;</div><div class="line">    case VeryLow</div><div class="line">    case Low</div><div class="line">    case Normal</div><div class="line">    case High</div><div class="line">    case VeryHigh</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="使用-NSOperation-还可以设置-Completion-Handler"><a href="#使用-NSOperation-还可以设置-Completion-Handler" class="headerlink" title="使用 NSOperation 还可以设置 Completion Handler"></a>使用 <code>NSOperation</code> 还可以设置 Completion Handler</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">operation1.completionBlock = &#123;</div><div class="line">    print(&quot;Operation 1 completed&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="设置依赖性"><a href="#设置依赖性" class="headerlink" title="设置依赖性"></a>设置依赖性</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//假设有operation1, operation2, operation3, operation4</div><div class="line"></div><div class="line">operation2.addDependency(operation1)</div><div class="line">operation3.addDependency(operation2)</div></pre></td></tr></table></figure>
+<p>这样执行次序为operation1 -&gt; operation2 -&gt; operation3，而operation4没有设置依赖，会并发执行。</p>
+<p>取消 Operation</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">queue.cancelAllOperations()</div></pre></td></tr></table></figure>
+<p>这条语句会使还未被执行的 Operation 被取消，当你对多个 Operation 设置依赖的时候可以看出效果。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="http://swift.gg/2016/01/08/ios-concurrency-getting-started-with-nsoperation-and-dispatch-queues/" target="_blank" rel="external">iOS 并发：从 NSOperation 和 Dispatch Queues 开始</a></li>
+</ol>
+
+  	</div>
+	  
+	  <div class="article-tags tags">
+		  
+        <a class="tag-link" href="/tags/Swift/">Swift</a><a class="tag-link" href="/tags/iOS/">iOS</a><a class="tag-link" href="/tags/学习笔记/">学习笔记</a><a class="tag-link" href="/tags/开发/">开发</a><a class="tag-link" href="/tags/技术/">技术</a>
+      
+	  </div>
+	</section>
+</article>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </main>
+    
+    <footer id="footer" class="clearfix">
+  
+  
+	<div class="search">
+	  <form name="searchform" id="searchform" class="u-search-form">
+	    <input type="text" id="searchinput" class="u-search-input" placeholder="Looking for something?" />
+	    <button type="submit" id="u-search-btn-submit" class="u-search-btn-submit">
+	      <span class="icon icon-search"></span>
+	    </button>
+	  </form>
+	</div>
+	
+
+	<div class="social-wrapper">
+  	
+      
+        <a href="https://github.com/zhuscat" class="social github"
+          target="_blank" rel="external">
+          <span class="icon icon-github"></span>
+        </a>
+      
+        <a href="/atom.xml" class="social rss"
+          target="_blank" rel="external">
+          <span class="icon icon-rss"></span>
+        </a>
+      
+        <a href="http://weibo.com/iwenzhou" class="social sina-weibo"
+          target="_blank" rel="external">
+          <span class="icon icon-sina-weibo"></span>
+        </a>
+      
+    
+  </div>
+  
+  <div>Theme <span class="codename">Typescript</span> designed by <a href="http://rakugaki.me/" target="_blank">Art Chen</a>.</div>
+  <div>&copy; <a href="/">旧城</a></div>
+  
+</footer>
+
+
+    <script>setLoadingBarProgress(80);</script>
+    
+  </div>
+
+  
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
+
+<script src="/js/jquery.fitvids.js"></script>
+<script>
+	var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+	var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+	var ALGOLIA_API_KEY = "";
+	var ALGOLIA_APP_ID = "";
+	var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+</script>
+<script src="/js/search.js"></script>
+<script src="/js/app.js"></script>
+
+
+  <script>setLoadingBarProgress(100);</script>
+  
+</body>
+</html>

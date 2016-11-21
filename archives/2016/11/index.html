@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>Archives: 2016/11 | 旧城</title>
+  <meta name="description" content="{{theme.description}}" />
+  <meta name="keywords" content="{{theme.keywords}}" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="旧城">
+<meta property="og:url" content="http://zhuscat.com/archives/2016/11/index.html">
+<meta property="og:site_name" content="旧城">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="旧城">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<script src="https://use.typekit.net/eyf3hir.js"></script>
+  <script>try{Typekit.load({ async: false });}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+  <script>setLoadingBarProgress(20)</script>
+  
+  <div id="site-wrapper">
+    
+    <header id="header">
+	<div id="header-wrapper" class="clearfix">
+		<a id="logo" href="/">
+			<img src="/images/logo.png" />
+			<span id="site-desc">
+			  c'est la vie
+      </span>
+		</a>
+		<button id="site-nav-switch">
+	    <span class="icon icon-menu"></span>
+	  </button>
+	</div>
+	<aside id="site-menu">
+  	<nav>
+  		
+        <a href="/" class="nav-home nav">
+          Home
+        </a>
+      
+        <a href="/about" class="nav-about nav">
+          About
+        </a>
+      
+        <a href="/archives" class="nav-archives nav">
+          Archives
+        </a>
+      
+    </nav>
+	</aside>
+</header>
+    <script>setLoadingBarProgress(40);</script>
+    
+    <main id="main" role="main">
+      
+	
+
+
+	<section class="page-header archive">
+    <h1>- <span>2016.11</span> -</h1>
+  </section>
+
+
+
+
+<section class="post-list">
+	
+    <article class="post ">
+
+  
+  <h2 class="title">
+    <a href="/2016/11/18/loose-equal/">
+      Loose Equal
+    </a>
+  </h2>
+  
+  <time>
+    Nov 18, 2016
+  </time>
+  <section class="content">
+	  <p><img src="http://7xpc78.com1.z0.glb.clouddn.com/loose-equal/loose-equal.jpg" alt="loose equal"></p>
+<p><code>==</code> 在 <code>JavaScript</code> 中与其他许多语言有着不同的行为，在 <code>JavaScript</code> 中，<code>==</code> 在比较双方的类型不同的时候进行强制类型转换，正因为这点，<code>==</code> 运算符遭到了很多人的诟病，但是，<code>==</code> 也有着自己的优势，比如适当的时候可以让代码更加简洁，<code>==</code> 的转换规则并不难，本文总结了其转换规则供大家参考。</p>
+<h3 id="特殊情况"><a href="#特殊情况" class="headerlink" title="特殊情况"></a>特殊情况</h3><p><code>NaN</code> 不等于 <code>NaN</code></p>
+<p><code>+0</code> 等于 <code>-0</code></p>
+<h3 id="字符串与数字的比较"><a href="#字符串与数字的比较" class="headerlink" title="字符串与数字的比较"></a>字符串与数字的比较</h3><p>将字符串转换为数字然后进行比较</p>
+<h3 id="其他类型与布尔类型之间的比较"><a href="#其他类型与布尔类型之间的比较" class="headerlink" title="其他类型与布尔类型之间的比较"></a>其他类型与布尔类型之间的比较</h3><p>将布尔类型转换为数字，然后再进行比较</p>
+<p><code>false</code> 转为 <code>0</code></p>
+<p><code>true</code> 转换为 <code>1</code></p>
+<h3 id="null-和-undefined-之间的比较"><a href="#null-和-undefined-之间的比较" class="headerlink" title="null 和 undefined 之间的比较"></a>null 和 undefined 之间的比较</h3><p><code>null == undefined</code> 为 <code>true</code></p>
+<h3 id="对象和非对象之间的比较"><a href="#对象和非对象之间的比较" class="headerlink" title="对象和非对象之间的比较"></a>对象和非对象之间的比较</h3><p>对对象做 <code>ToPrimitive</code> 操作，然后再比较</p>
+<h3 id="实例运用"><a href="#实例运用" class="headerlink" title="实例运用"></a>实例运用</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[] == ![] <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<p><code>![]</code> 将 <code>[]</code> 转换为布尔值，值为 <code>false</code>，所以上式变为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[] == <span class="literal">false</span></div></pre></td></tr></table></figure>
+<p><code>[]</code> 是对象，对其做 <code>ToPrimitive</code> 操作，转换为 <code>&#39;&#39;</code>，所以上式变为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">''</span> == <span class="literal">false</span></div></pre></td></tr></table></figure>
+<p><code>false</code> 转换为数字 <code>0</code>，上式变为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">''</span> == <span class="number">0</span></div></pre></td></tr></table></figure>
+<p><code>&#39;&#39;</code> 转换为数字，转换为<code>0</code>，所以上式变为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">0</span> == <span class="number">0</span></div></pre></td></tr></table></figure>
+<p>结果为 <code>true</code></p>
+
+
+    
+    
+    
+	  <div class="tags">
+      <a class="tag-link" href="/tags/JavaScript/">JavaScript</a><a class="tag-link" href="/tags/前端/">前端</a>
+	  </div>
+    
+
+  </section>
+</article>
+  
+    <article class="post ">
+
+  
+  <h2 class="title">
+    <a href="/2016/11/07/maintainable-javascript/">
+      《编写可维护的 JavaScript》读后感
+    </a>
+  </h2>
+  
+  <time>
+    Nov 7, 2016
+  </time>
+  <section class="content">
+	  <p>今天读了《编写可维护的 JavaScript》，基本上是用很快的速度把这本书看完了。</p>
+<p>不得不感叹一下前端变化之快，书中很多东西现在都有了变化。这本书比较适合 JavaScript 的初学者，很多内容都是老生常谈的了。比如缩进、是否使用分号、变量命名等等，这些东西其实在项目中开启 ESLint 或者 JSLint 之后多写点代码就有养成习惯了。</p>
+<p>第二部分的内容是编程实践，比如与 HTML 分离，与 CSS 分离等等也是我们经常看到的内容。还有就是避免使用全局变量，事件处理隔离应用逻辑等等。总之，第二部分我认为是本书比较值得看的地方，不过大部分内容页都是从其他书中看过了。</p>
+<p>第三部分，也就是最后一部分，讲的是自动化。这一部分内容也许是跟现在差异最大的地方了。比如构建工具书中介绍的是 Ant ，而 Ant 这工具我从来没有使用过（其实之前我根本不知道）。现在一般都会使用 Grunt 或者 Gulp 吧？校验的话我现在用的是 ESLint，使用的测试工具也与书中不同。</p>
+<p>总的来说，之前我给这本书的期望值太高了。这本书比较适合平时写代码不太规范的人或者 JavaScript 初学者，看了之后应该能有许多收获。</p>
+
+    
+	  <div class="readmore">
+      <a href="/2016/11/07/maintainable-javascript/">Read More</a>
+    </div>
+    
+    
+    
+	  <div class="tags">
+      <a class="tag-link" href="/tags/JavaScript/">JavaScript</a><a class="tag-link" href="/tags/前端/">前端</a><a class="tag-link" href="/tags/读后感/">读后感</a>
+	  </div>
+    
+
+  </section>
+</article>
+  
+</section>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </main>
+    
+    <footer id="footer" class="clearfix">
+  
+  
+	<div class="search">
+	  <form name="searchform" id="searchform" class="u-search-form">
+	    <input type="text" id="searchinput" class="u-search-input" placeholder="Looking for something?" />
+	    <button type="submit" id="u-search-btn-submit" class="u-search-btn-submit">
+	      <span class="icon icon-search"></span>
+	    </button>
+	  </form>
+	</div>
+	
+
+	<div class="social-wrapper">
+  	
+      
+        <a href="https://github.com/zhuscat" class="social github"
+          target="_blank" rel="external">
+          <span class="icon icon-github"></span>
+        </a>
+      
+        <a href="/atom.xml" class="social rss"
+          target="_blank" rel="external">
+          <span class="icon icon-rss"></span>
+        </a>
+      
+        <a href="http://weibo.com/iwenzhou" class="social sina-weibo"
+          target="_blank" rel="external">
+          <span class="icon icon-sina-weibo"></span>
+        </a>
+      
+    
+  </div>
+  
+  <div>Theme <span class="codename">Typescript</span> designed by <a href="http://rakugaki.me/" target="_blank">Art Chen</a>.</div>
+  <div>&copy; <a href="/">旧城</a></div>
+  
+</footer>
+
+
+    <script>setLoadingBarProgress(80);</script>
+    
+  </div>
+
+  
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
+
+<script src="/js/jquery.fitvids.js"></script>
+<script>
+	var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+	var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+	var ALGOLIA_API_KEY = "";
+	var ALGOLIA_APP_ID = "";
+	var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+</script>
+<script src="/js/search.js"></script>
+<script src="/js/app.js"></script>
+
+
+  <script>setLoadingBarProgress(100);</script>
+  
+</body>
+</html>

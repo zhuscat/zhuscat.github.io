@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>轻扫隐藏键盘以及导航栏定制 | 旧城</title>
+  <meta name="description" content="{{theme.description}}" />
+  <meta name="keywords" content="{{theme.keywords}}" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="写这篇文章的原因是看到一个网站 100 Days of Swift ，这个网站里放着作者学习100天里所做的一些作品，如果有源码就更好了。这些作品，对我这个初学者来说可以说是很好的练手项目了。于是我准备去写这些作品中的一些效果，当然从简单开始啦，这个是那个网站的 PROJECT 8，以下是效果图（来自 100 Day of Swift）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="轻扫隐藏键盘以及导航栏定制">
+<meta property="og:url" content="http://zhuscat.com/2016/01/29/swift-day-one/index.html">
+<meta property="og:site_name" content="旧城">
+<meta property="og:description" content="写这篇文章的原因是看到一个网站 100 Days of Swift ，这个网站里放着作者学习100天里所做的一些作品，如果有源码就更好了。这些作品，对我这个初学者来说可以说是很好的练手项目了。于是我准备去写这些作品中的一些效果，当然从简单开始啦，这个是那个网站的 PROJECT 8，以下是效果图（来自 100 Day of Swift）。">
+<meta property="og:image" content="http://7xpc78.com1.z0.glb.clouddn.com/swipe-to-dismiss-keyboard.gif">
+<meta property="og:updated_time" content="2016-04-20T07:44:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="轻扫隐藏键盘以及导航栏定制">
+<meta name="twitter:description" content="写这篇文章的原因是看到一个网站 100 Days of Swift ，这个网站里放着作者学习100天里所做的一些作品，如果有源码就更好了。这些作品，对我这个初学者来说可以说是很好的练手项目了。于是我准备去写这些作品中的一些效果，当然从简单开始啦，这个是那个网站的 PROJECT 8，以下是效果图（来自 100 Day of Swift）。">
+<meta name="twitter:image" content="http://7xpc78.com1.z0.glb.clouddn.com/swipe-to-dismiss-keyboard.gif">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<script src="https://use.typekit.net/eyf3hir.js"></script>
+  <script>try{Typekit.load({ async: false });}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+  <script>setLoadingBarProgress(20)</script>
+  
+  <div id="site-wrapper">
+    
+    <header id="header">
+	<div id="header-wrapper" class="clearfix">
+		<a id="logo" href="/">
+			<img src="/images/logo.png" />
+			<span id="site-desc">
+			  c'est la vie
+      </span>
+		</a>
+		<button id="site-nav-switch">
+	    <span class="icon icon-menu"></span>
+	  </button>
+	</div>
+	<aside id="site-menu">
+  	<nav>
+  		
+        <a href="/" class="nav-home nav">
+          Home
+        </a>
+      
+        <a href="/about" class="nav-about nav">
+          About
+        </a>
+      
+        <a href="/archives" class="nav-archives nav">
+          Archives
+        </a>
+      
+    </nav>
+	</aside>
+</header>
+    <script>setLoadingBarProgress(40);</script>
+    
+    <main id="main" role="main">
+      <article id="post-swift-day-one"
+  class="post article white-box article-type-post"
+  itemscope itemprop="blogPost">
+	<h2 class="title">
+  	<a href="/2016/01/29/swift-day-one/">
+    	轻扫隐藏键盘以及导航栏定制
+    </a>
+  </h2>
+	<time>
+	  Jan 29, 2016
+	</time>
+	<section class="content">
+  	<div class="article-entry" itemprop="articleBody">
+    	<p>写这篇文章的原因是看到一个网站 <a href="http://samvlu.com" target="_blank" rel="external">100 Days of Swift</a> ，这个网站里放着作者学习100天里所做的一些作品，如果有源码就更好了。这些作品，对我这个初学者来说可以说是很好的练手项目了。于是我准备去写这些作品中的一些效果，当然从简单开始啦，这个是那个网站的 PROJECT 8，以下是效果图（来自 100 Day of Swift）。</p>
+<p><img src="http://7xpc78.com1.z0.glb.clouddn.com/swipe-to-dismiss-keyboard.gif" alt="swipe to dismiss keyboard"></p>
+<a id="more"></a>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>从图片中可以看出，导航栏是透明的，返回按钮右边没有文字。现在假设我们已经创建好了两个 View Controller，分别叫做 FirstViewController 和 SecondViewController 吧。FirstViewController 里面有一个按钮，点击之后转到如上图所示的界面中，界面的话用 storyboard 拖出来，然后进行一些连接就行了，有一定基础都知道吧。</p>
+<h2 id="设置导航栏透明"><a href="#设置导航栏透明" class="headerlink" title="设置导航栏透明"></a>设置导航栏透明</h2><p>如何能使导航栏透明呢？可以在 FirstViewController 的 <code>viewDidLoad</code> 中设置，代码本身没有什么特别的，主要是要找到设置透明的办法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">navigationController?.navigationBar.setBackgroundImage(UIImage(),forBarMetrics: UIBarMetrics.Default)</div><div class="line">navigationController?.navigationBar.shadowImage = UIImage()</div><div class="line">navigationController?.navigationBar.translucent = true</div></pre></td></tr></table></figure>
+<h2 id="去除返回按钮旁边的文字"><a href="#去除返回按钮旁边的文字" class="headerlink" title="去除返回按钮旁边的文字"></a>去除返回按钮旁边的文字</h2><p>可以还是在 FirstViewController 的 <code>viewDidLoad</code> 中设置（只要在下一个视图控制器 push 进来之前设置就行了），之前看了以下文档，没有理解透彻，然后在 SecondViewController 中进行设置，没有效果，卡了好久（试了其他各种方法），原来这个 <code>backBarButtonItem</code> 跟 <code>leftBarButtonItem</code> 和 <code>rightBarButtonItem</code> 不一样，这个属性会决定下一个 push 进来的视图控制器的返回按钮样式，向下面这样设置完之后导航栏部分就完成了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">navigationItem.backBarButtonItem = UIBarButtonItem(title: &quot;&quot;, style: UIBarButtonItemStyle.Plain, target: nil, action: nil)</div></pre></td></tr></table></figure>
+<h2 id="自动显示键盘"><a href="#自动显示键盘" class="headerlink" title="自动显示键盘"></a>自动显示键盘</h2><p>在 SecondViewController 中有一个 textField ，因此可以像如下代码在 <code>viewDidAppear</code> 中设置，与之相反的就是 <code>resignFirstResponder()</code> 了，这个函数的调用自然就是在手势发生后啦：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">textField.becomeFirstResponder()</div></pre></td></tr></table></figure>
+<h2 id="下滑手势隐藏键盘"><a href="#下滑手势隐藏键盘" class="headerlink" title="下滑手势隐藏键盘"></a>下滑手势隐藏键盘</h2><p>可以在 SecondViewController 的 <code>viewDidLoad</code> 中添加手势，下面的代码创建了一个 UISwipeGestureRecognizer 实例，设置了识别的方向的向下轻扫，手势做出后调用 SecondViewController 中的 <code>swipeHandler</code> 函数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">let swipeGesture = UISwipeGestureRecognizer(target: self, action: &quot;swipeHandler:&quot;)</div><div class="line">swipeGesture.direction = UISwipeGestureRecognizerDirection.Down</div><div class="line">view.addGesture(swipeGesture)</div></pre></td></tr></table></figure>
+<h2 id="手势处理函数"><a href="#手势处理函数" class="headerlink" title="手势处理函数"></a>手势处理函数</h2><p>最后在 SecondViewController 中添加以下函数即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">func handler(gesture: UISwipeGestureRecognizer) &#123;</div><div class="line">    textView.resignFirstResponder()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="滑动键盘消失的另一个方法"><a href="#滑动键盘消失的另一个方法" class="headerlink" title="滑动键盘消失的另一个方法"></a>滑动键盘消失的另一个方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">textView.alwaysBounceVertical = true</div><div class="line">textView.keyboardDismissMode = UIScrollViewKeyboardDismissMode.OnDrag</div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这样看来，这个示例并没有什么困难的，但对我来说，如何自定义导航一开始是不知道的，其中有些概念也没弄清楚，如果你也有困惑的话，推荐你看以下这篇博文，我看了之后感觉挺不错的，<a href="http://www.jianshu.com/p/f797793d683f" target="_blank" rel="external">【iOS】导航栏那些事儿</a>，那这篇文章就这样啦。</p>
+<h1 id="更新记录"><a href="#更新记录" class="headerlink" title="更新记录"></a>更新记录</h1><p>2016年4月20日：增加 滑动键盘消失的另一个方法</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="http://samvlu.com" target="_blank" rel="external">100 Days of Swift</a></li>
+<li><a href="http://www.jianshu.com/p/f797793d683f" target="_blank" rel="external">【iOS】导航栏那些事儿</a></li>
+<li><a href="http://www.cocoachina.com/bbs/read.php?tid-280506-page-2.html" target="_blank" rel="external">如何让navigationBar透明的同时上面的navigationItem不透明</a></li>
+<li><a href="https://lvwenhan.com/ios/428.html" target="_blank" rel="external">如何修改 UINavigationController、UINavigationBar 中 navigationItem 左侧 “返回” 按钮的名称</a></li>
+</ol>
+
+  	</div>
+	  
+	  <div class="article-tags tags">
+		  
+        <a class="tag-link" href="/tags/Swift/">Swift</a><a class="tag-link" href="/tags/iOS/">iOS</a><a class="tag-link" href="/tags/实践/">实践</a><a class="tag-link" href="/tags/开发/">开发</a><a class="tag-link" href="/tags/技术/">技术</a>
+      
+	  </div>
+	</section>
+</article>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </main>
+    
+    <footer id="footer" class="clearfix">
+  
+  
+	<div class="search">
+	  <form name="searchform" id="searchform" class="u-search-form">
+	    <input type="text" id="searchinput" class="u-search-input" placeholder="Looking for something?" />
+	    <button type="submit" id="u-search-btn-submit" class="u-search-btn-submit">
+	      <span class="icon icon-search"></span>
+	    </button>
+	  </form>
+	</div>
+	
+
+	<div class="social-wrapper">
+  	
+      
+        <a href="https://github.com/zhuscat" class="social github"
+          target="_blank" rel="external">
+          <span class="icon icon-github"></span>
+        </a>
+      
+        <a href="/atom.xml" class="social rss"
+          target="_blank" rel="external">
+          <span class="icon icon-rss"></span>
+        </a>
+      
+        <a href="http://weibo.com/iwenzhou" class="social sina-weibo"
+          target="_blank" rel="external">
+          <span class="icon icon-sina-weibo"></span>
+        </a>
+      
+    
+  </div>
+  
+  <div>Theme <span class="codename">Typescript</span> designed by <a href="http://rakugaki.me/" target="_blank">Art Chen</a>.</div>
+  <div>&copy; <a href="/">旧城</a></div>
+  
+</footer>
+
+
+    <script>setLoadingBarProgress(80);</script>
+    
+  </div>
+
+  
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
+
+<script src="/js/jquery.fitvids.js"></script>
+<script>
+	var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+	var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+	var ALGOLIA_API_KEY = "";
+	var ALGOLIA_APP_ID = "";
+	var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+</script>
+<script src="/js/search.js"></script>
+<script src="/js/app.js"></script>
+
+
+  <script>setLoadingBarProgress(100);</script>
+  
+</body>
+</html>

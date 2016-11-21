@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>在 Swift 中使用 SQLite3 | 旧城</title>
+  <meta name="description" content="{{theme.description}}" />
+  <meta name="keywords" content="{{theme.keywords}}" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这篇文章简单的描述了一下如何在 Swift 中使用 SQLite3，并简单地说记录一下一些函数的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 Swift 中使用 SQLite3">
+<meta property="og:url" content="http://zhuscat.com/2016/04/23/sqlite3/index.html">
+<meta property="og:site_name" content="旧城">
+<meta property="og:description" content="这篇文章简单的描述了一下如何在 Swift 中使用 SQLite3，并简单地说记录一下一些函数的使用。">
+<meta property="og:updated_time" content="2016-04-23T09:54:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在 Swift 中使用 SQLite3">
+<meta name="twitter:description" content="这篇文章简单的描述了一下如何在 Swift 中使用 SQLite3，并简单地说记录一下一些函数的使用。">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<script src="https://use.typekit.net/eyf3hir.js"></script>
+  <script>try{Typekit.load({ async: false });}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+  <script>setLoadingBarProgress(20)</script>
+  
+  <div id="site-wrapper">
+    
+    <header id="header">
+	<div id="header-wrapper" class="clearfix">
+		<a id="logo" href="/">
+			<img src="/images/logo.png" />
+			<span id="site-desc">
+			  c'est la vie
+      </span>
+		</a>
+		<button id="site-nav-switch">
+	    <span class="icon icon-menu"></span>
+	  </button>
+	</div>
+	<aside id="site-menu">
+  	<nav>
+  		
+        <a href="/" class="nav-home nav">
+          Home
+        </a>
+      
+        <a href="/about" class="nav-about nav">
+          About
+        </a>
+      
+        <a href="/archives" class="nav-archives nav">
+          Archives
+        </a>
+      
+    </nav>
+	</aside>
+</header>
+    <script>setLoadingBarProgress(40);</script>
+    
+    <main id="main" role="main">
+      <article id="post-sqlite3"
+  class="post article white-box article-type-post"
+  itemscope itemprop="blogPost">
+	<h2 class="title">
+  	<a href="/2016/04/23/sqlite3/">
+    	在 Swift 中使用 SQLite3
+    </a>
+  </h2>
+	<time>
+	  Apr 23, 2016
+	</time>
+	<section class="content">
+  	<div class="article-entry" itemprop="articleBody">
+    	<p>这篇文章简单的描述了一下如何在 Swift 中使用 SQLite3，并简单地说记录一下一些函数的使用。</p>
+<a id="more"></a>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="添加库"><a href="#添加库" class="headerlink" title="添加库"></a>添加库</h2><p>点击项目设置，选择 TARGETS 中的项目，在 Linked Frameworks and Libraries 中点击 + 号，选择 libsqlite3.0.tbd 或者 libsqlite3.tdb</p>
+<p>添加桥接头文件，创建一个<code>.h</code>文件，在里面写上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#import &lt;sqlite3.h&gt;</div></pre></td></tr></table></figure>
+<p>在项目设置中，在 TARGETS 中点击你的项目，选择 Build Settings ，在 Objective-C Bridging Header 中添加你的桥接头文件，到这一步，你就可以在你的项目中使用 SQLite3 了</p>
+<h2 id="一些函数"><a href="#一些函数" class="headerlink" title="一些函数"></a>一些函数</h2><p>1、连接数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sqlite3_open(filename: UnsafePointer&lt;Int8&gt;, </div><div class="line">ppDb: UnsafeMutablePointer&lt;COpaquePointer&gt;)</div></pre></td></tr></table></figure>
+<p>打开一个数据库，根据传入的文件名，第二个参数是传入一个指针，打开成功后将指针置为一个数据库连接，如果文件不存在，则会创建文件，当操作成功时，函数返回 <code>SQLITE_OK</code></p>
+<p>2、预编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sqlite3_prepare_v2(db: COpaquePointer, </div><div class="line">zSql: UnsafePointer&lt;Int8&gt;, </div><div class="line">nByte: Int32, </div><div class="line">ppStmt: UnsafeMutablePointer&lt;COpaquePointer&gt;, </div><div class="line">pzTail: UnsafeMutablePointer&lt;UnsafePointer&lt;Int8&gt;&gt;)</div></pre></td></tr></table></figure>
+<p>对 SQL 语句进行预编译</p>
+<p>db: 一个数据库连接，如之前用 sqlite3_open 函数后第二个参数被改变的值</p>
+<p>zSql: 要求进行预编译的语句</p>
+<p>nByte: 语句的长度，如果传入-1，则视为读到第一个 zero terminator 后结束</p>
+<p>ppStmt: 预编译的句柄</p>
+<p>pzTail: 如果其不是 NULL 的话，指向 zSql 中的第一个 SQL 语句之后的第一个字符</p>
+<p>3、执行SQL语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sqlite3_exec(COpaquePointer, </div><div class="line">sql: UnsafePointer&lt;Int8&gt;, </div><div class="line">callback: ((UnsafeMutablePointer&lt;Void&gt;, Int32, UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;&gt;, UnsafeMutablePointerPointer&lt;UnsafeMutablePointer&lt;Int8&gt;&gt;) -&gt; Int32), </div><div class="line">UnsafeMutablePointer&lt;Void&gt;, </div><div class="line">errmsg: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;&gt;)</div></pre></td></tr></table></figure>
+<p>一共五个参数，用于执行SQL语句</p>
+<p>第一个参数：一个数据库连接<br>第二个参数：要执行的SQL语句<br>第三个参数：执行SQL语句之后的回调，一般是传入nil<br>第四个参数：第三个参数的第一个参数，一般是传入nil<br>第五个参数：错误信息，一般传入nil</p>
+<p>4、执行SQL语句后获取执行结果信息的函数</p>
+<p>这里有许多函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">// 传入一个句柄，之前的stmt</div><div class="line">// 如果返回的是SQLITE_ROW，则说明还依旧有记录存在，可以进行读取</div><div class="line">sqlite3_step(COpaquePointer)</div><div class="line">// 获取列数</div><div class="line">sqlite3_column_count(pStmt: COpaquePointer)</div><div class="line"></div><div class="line">// 获取列名，为第N列</div><div class="line">sqlite3_column_name(COpaquePointer, N: Int32)</div><div class="line"></div><div class="line">// 获取第iCol列的数据类型</div><div class="line">// 如int类型返回SQLITE_INTEGER</div><div class="line">// 数据类型比较多，可以进头文件看一下</div><div class="line">sqlite3_column_type(COpaquePointer, iCol: Int32)</div><div class="line"></div><div class="line">// 获取执行结果中一条记录中第iCol列的数据，且是一个int类型的</div><div class="line">// 类似的函数有许多，都是以sqlite3_column_开头的，用法类似，大家可以自己试一下</div><div class="line">sqlite3_column_int(COpaquePointer, iCol: Int32)</div></pre></td></tr></table></figure>
+<p>5、绑定数据</p>
+<p>可以绑定 SQL 语句中的 <code>?</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 第一个参数：stmt句柄</div><div class="line">// 第二个参数：第几个参数，以1开始</div><div class="line">// 绑定的值</div><div class="line">// 有许多sqlite_bind_开头的函数，用法类似</div><div class="line">sqlite_bind_double(COpaquePointer, Int32, Double)</div></pre></td></tr></table></figure>
+<p>6、一些stmt句柄的操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 重置句柄</div><div class="line">sqlite3_reset(pStmt: COpaquePointer)</div><div class="line"></div><div class="line">// 关闭句柄</div><div class="line">// 在结束 SQL 语句的使用之后，要调用这个函数</div><div class="line">sqlite3_finalize(pStmt: COpaquePointer)</div></pre></td></tr></table></figure>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p>在 Swift 中使用 SQLite3 要注意的点就是注意类型，因为这是一个C语言的库，所以在 Swift 中使用有一些麻烦。<br>比如字符串传入的是C字符串，需要将 Swift 中的 String 进行转换，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&quot;EXAPMLE&quot;.cStringUsingEncoding(NSUTF8StringEncoding)</div></pre></td></tr></table></figure>
+<p>类似的转换还有许多，都是需要注意的。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>一开始本来只是简要的写一下，结果发现内容很多，还有许多没写的，等待以后慢慢完善吧。</p>
+<h1 id="更新记录"><a href="#更新记录" class="headerlink" title="更新记录"></a>更新记录</h1><p>2016年4月23日：修改一个地方的格式问题</p>
+
+  	</div>
+	  
+	  <div class="article-tags tags">
+		  
+        <a class="tag-link" href="/tags/Swift/">Swift</a><a class="tag-link" href="/tags/iOS/">iOS</a><a class="tag-link" href="/tags/学习笔记/">学习笔记</a>
+      
+	  </div>
+	</section>
+</article>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </main>
+    
+    <footer id="footer" class="clearfix">
+  
+  
+	<div class="search">
+	  <form name="searchform" id="searchform" class="u-search-form">
+	    <input type="text" id="searchinput" class="u-search-input" placeholder="Looking for something?" />
+	    <button type="submit" id="u-search-btn-submit" class="u-search-btn-submit">
+	      <span class="icon icon-search"></span>
+	    </button>
+	  </form>
+	</div>
+	
+
+	<div class="social-wrapper">
+  	
+      
+        <a href="https://github.com/zhuscat" class="social github"
+          target="_blank" rel="external">
+          <span class="icon icon-github"></span>
+        </a>
+      
+        <a href="/atom.xml" class="social rss"
+          target="_blank" rel="external">
+          <span class="icon icon-rss"></span>
+        </a>
+      
+        <a href="http://weibo.com/iwenzhou" class="social sina-weibo"
+          target="_blank" rel="external">
+          <span class="icon icon-sina-weibo"></span>
+        </a>
+      
+    
+  </div>
+  
+  <div>Theme <span class="codename">Typescript</span> designed by <a href="http://rakugaki.me/" target="_blank">Art Chen</a>.</div>
+  <div>&copy; <a href="/">旧城</a></div>
+  
+</footer>
+
+
+    <script>setLoadingBarProgress(80);</script>
+    
+  </div>
+
+  
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
+
+<script src="/js/jquery.fitvids.js"></script>
+<script>
+	var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+	var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+	var ALGOLIA_API_KEY = "";
+	var ALGOLIA_APP_ID = "";
+	var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+</script>
+<script src="/js/search.js"></script>
+<script src="/js/app.js"></script>
+
+
+  <script>setLoadingBarProgress(100);</script>
+  
+</body>
+</html>

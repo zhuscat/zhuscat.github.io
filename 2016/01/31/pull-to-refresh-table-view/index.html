@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>下拉刷新 TableView | 旧城</title>
+  <meta name="description" content="{{theme.description}}" />
+  <meta name="keywords" content="{{theme.keywords}}" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="写这篇文章的原因是看到一个网站 100 Days of Swift ，这个网站里放着作者学习100天里所做的一些作品，如果有源码就更好了。这些作品，对我这个初学者来说可以说是很好的练手项目了。于是我准备去写这些作品中的一些效果，当然从简单开始啦，这个是那个网站的 PROJECT 10，以下是效果图（来自 100 Day of Swift）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="下拉刷新 TableView">
+<meta property="og:url" content="http://zhuscat.com/2016/01/31/pull-to-refresh-table-view/index.html">
+<meta property="og:site_name" content="旧城">
+<meta property="og:description" content="写这篇文章的原因是看到一个网站 100 Days of Swift ，这个网站里放着作者学习100天里所做的一些作品，如果有源码就更好了。这些作品，对我这个初学者来说可以说是很好的练手项目了。于是我准备去写这些作品中的一些效果，当然从简单开始啦，这个是那个网站的 PROJECT 10，以下是效果图（来自 100 Day of Swift）。">
+<meta property="og:image" content="http://7xpc78.com1.z0.glb.clouddn.com/pull-to-refresh.gif">
+<meta property="og:updated_time" content="2016-01-31T13:34:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="下拉刷新 TableView">
+<meta name="twitter:description" content="写这篇文章的原因是看到一个网站 100 Days of Swift ，这个网站里放着作者学习100天里所做的一些作品，如果有源码就更好了。这些作品，对我这个初学者来说可以说是很好的练手项目了。于是我准备去写这些作品中的一些效果，当然从简单开始啦，这个是那个网站的 PROJECT 10，以下是效果图（来自 100 Day of Swift）。">
+<meta name="twitter:image" content="http://7xpc78.com1.z0.glb.clouddn.com/pull-to-refresh.gif">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<script src="https://use.typekit.net/eyf3hir.js"></script>
+  <script>try{Typekit.load({ async: false });}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+  <script>setLoadingBarProgress(20)</script>
+  
+  <div id="site-wrapper">
+    
+    <header id="header">
+	<div id="header-wrapper" class="clearfix">
+		<a id="logo" href="/">
+			<img src="/images/logo.png" />
+			<span id="site-desc">
+			  c'est la vie
+      </span>
+		</a>
+		<button id="site-nav-switch">
+	    <span class="icon icon-menu"></span>
+	  </button>
+	</div>
+	<aside id="site-menu">
+  	<nav>
+  		
+        <a href="/" class="nav-home nav">
+          Home
+        </a>
+      
+        <a href="/about" class="nav-about nav">
+          About
+        </a>
+      
+        <a href="/archives" class="nav-archives nav">
+          Archives
+        </a>
+      
+    </nav>
+	</aside>
+</header>
+    <script>setLoadingBarProgress(40);</script>
+    
+    <main id="main" role="main">
+      <article id="post-pull-to-refresh-table-view"
+  class="post article white-box article-type-post"
+  itemscope itemprop="blogPost">
+	<h2 class="title">
+  	<a href="/2016/01/31/pull-to-refresh-table-view/">
+    	下拉刷新 TableView
+    </a>
+  </h2>
+	<time>
+	  Jan 31, 2016
+	</time>
+	<section class="content">
+  	<div class="article-entry" itemprop="articleBody">
+    	<p>写这篇文章的原因是看到一个网站 <a href="http://samvlu.com" target="_blank" rel="external">100 Days of Swift</a> ，这个网站里放着作者学习100天里所做的一些作品，如果有源码就更好了。这些作品，对我这个初学者来说可以说是很好的练手项目了。于是我准备去写这些作品中的一些效果，当然从简单开始啦，这个是那个网站的 PROJECT 10，以下是效果图（来自 100 Day of Swift）。</p>
+<p><img src="http://7xpc78.com1.z0.glb.clouddn.com/pull-to-refresh.gif" alt="pull to refresh table view"></p>
+<a id="more"></a>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>下拉后模拟一个加载的过程，加载结束后刷新 TableView 并停止 RefreshControl 转动。</p>
+<h2 id="设置导航栏颜色"><a href="#设置导航栏颜色" class="headerlink" title="设置导航栏颜色"></a>设置导航栏颜色</h2><p>在 AppDelegate 中设置导航栏颜色为白色：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -&gt; Bool &#123;</div><div class="line">    // barTintColor 修改导航栏颜色</div><div class="line">    UINavigationBar.appearance().barTintColor = UIColor.whiteColor()</div><div class="line">    return true</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="导航栏图标、标题以及-RefreshControl"><a href="#导航栏图标、标题以及-RefreshControl" class="headerlink" title="导航栏图标、标题以及 RefreshControl"></a>导航栏图标、标题以及 RefreshControl</h2><p>直接给出代码，已经写注释了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">import UIKit</div><div class="line"></div><div class="line">class TableViewController: UITableViewController &#123;</div><div class="line">    </div><div class="line">    // 数据源</div><div class="line">    var dataSource = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;f&quot;]</div><div class="line">    </div><div class="line">    override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line"></div><div class="line">        // Uncomment the following line to preserve selection between presentations</div><div class="line">        // self.clearsSelectionOnViewWillAppear = false</div><div class="line"></div><div class="line">        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.</div><div class="line">        // self.navigationItem.rightBarButtonItem = self.editButtonItem()</div><div class="line">        </div><div class="line">        // 设置导航栏左边图标</div><div class="line">        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Edit, target: nil, action: nil)</div><div class="line">        // 设置导航栏右边图标</div><div class="line">        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: nil, action: nil)</div><div class="line">        // 设置导航栏标题</div><div class="line">        navigationItem.title = &quot;Groceries&quot;</div><div class="line">        // 设定refreshControl</div><div class="line">        refreshControl = UIRefreshControl()</div><div class="line">        // refreshControl 激活时调用 handleRefresh</div><div class="line">        refreshControl?.addTarget(self, action: &quot;handleRefresh&quot;, forControlEvents: UIControlEvents.ValueChanged)</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    override func didReceiveMemoryWarning() &#123;</div><div class="line">        super.didReceiveMemoryWarning()</div><div class="line">        // Dispose of any resources that can be recreated.</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    func handleRefresh() &#123;</div><div class="line">        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * Double(NSEC_PER_SEC)))</div><div class="line">        // 两秒延迟调用模拟加载时间</div><div class="line">        dispatch_after(dispatchTime, dispatch_get_main_queue()) &#123;</div><div class="line">            self.dataSource.append(&quot;g&quot;)</div><div class="line">            self.dataSource.append(&quot;h&quot;)</div><div class="line">            // 重载数据</div><div class="line">            self.tableView.reloadData()</div><div class="line">            // 停止动画</div><div class="line">            self.refreshControl?.endRefreshing()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // MARK: - Table view data source</div><div class="line"></div><div class="line">    override func numberOfSectionsInTableView(tableView: UITableView) -&gt; Int &#123;</div><div class="line">        return 1</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int &#123;</div><div class="line">        return dataSource.count</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -&gt; UITableViewCell &#123;</div><div class="line">        let cell = tableView.dequeueReusableCellWithIdentifier(&quot;cell&quot;, forIndexPath: indexPath)</div><div class="line">        // Configure the cell...</div><div class="line">        cell.textLabel?.text = dataSource[indexPath.row]</div><div class="line"></div><div class="line">        return cell</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那这次文章就结束了，还是比较简单的，有什么疑惑，或者我写了什么错误的地方，欢迎评论。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="http://samvlu.com" target="_blank" rel="external">100 Days of Swift</a></li>
+</ol>
+
+  	</div>
+	  
+	  <div class="article-tags tags">
+		  
+        <a class="tag-link" href="/tags/Swift/">Swift</a><a class="tag-link" href="/tags/iOS/">iOS</a><a class="tag-link" href="/tags/实践/">实践</a><a class="tag-link" href="/tags/开发/">开发</a><a class="tag-link" href="/tags/技术/">技术</a>
+      
+	  </div>
+	</section>
+</article>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </main>
+    
+    <footer id="footer" class="clearfix">
+  
+  
+	<div class="search">
+	  <form name="searchform" id="searchform" class="u-search-form">
+	    <input type="text" id="searchinput" class="u-search-input" placeholder="Looking for something?" />
+	    <button type="submit" id="u-search-btn-submit" class="u-search-btn-submit">
+	      <span class="icon icon-search"></span>
+	    </button>
+	  </form>
+	</div>
+	
+
+	<div class="social-wrapper">
+  	
+      
+        <a href="https://github.com/zhuscat" class="social github"
+          target="_blank" rel="external">
+          <span class="icon icon-github"></span>
+        </a>
+      
+        <a href="/atom.xml" class="social rss"
+          target="_blank" rel="external">
+          <span class="icon icon-rss"></span>
+        </a>
+      
+        <a href="http://weibo.com/iwenzhou" class="social sina-weibo"
+          target="_blank" rel="external">
+          <span class="icon icon-sina-weibo"></span>
+        </a>
+      
+    
+  </div>
+  
+  <div>Theme <span class="codename">Typescript</span> designed by <a href="http://rakugaki.me/" target="_blank">Art Chen</a>.</div>
+  <div>&copy; <a href="/">旧城</a></div>
+  
+</footer>
+
+
+    <script>setLoadingBarProgress(80);</script>
+    
+  </div>
+
+  
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
+
+<script src="/js/jquery.fitvids.js"></script>
+<script>
+	var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+	var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+	var ALGOLIA_API_KEY = "";
+	var ALGOLIA_APP_ID = "";
+	var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+</script>
+<script src="/js/search.js"></script>
+<script src="/js/app.js"></script>
+
+
+  <script>setLoadingBarProgress(100);</script>
+  
+</body>
+</html>
