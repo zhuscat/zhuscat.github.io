@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="ZhusCafe">
 <meta property="og:description" content="今天看到一篇文章, 和transformjs一起摇摆, 顺便去看了一下源码, 源码不是很多,一百八十多行, 于是仔细阅读了一下, 变形的实现是通过 CSS 的 transform 属性完成的. 一个关键的方法是 watch, 代码如下:
 1234567891011121314function watch(target, prop, callback) &amp;#123;    Object.define">
-<meta property="og:updated_time" content="2016-12-07T15:48:21.000Z">
+<meta property="og:updated_time" content="2016-12-07T15:51:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="matrix3d">
 <meta name="twitter:description" content="今天看到一篇文章, 和transformjs一起摇摆, 顺便去看了一下源码, 源码不是很多,一百八十多行, 于是仔细阅读了一下, 变形的实现是通过 CSS 的 transform 属性完成的. 一个关键的方法是 watch, 代码如下:
@@ -391,7 +391,7 @@
 <p><strong>skewX(az):</strong></p>
 <p>$$<br>\begin{bmatrix}<br>   1 &amp; tan(a_y) &amp; 0 &amp; 0 \\<br>   0 &amp; 1 &amp; 0 &amp; 0 \\<br>   0 &amp; 0 &amp; 1 &amp; 0 \\<br>   0 &amp; 0 &amp; 0 &amp; 1<br> \end{bmatrix}<br>$$</p>
 <p><strong>变换中心改变：</strong></p>
-<p>设新的中心点为 $x_0$, $y_0$, $z_0$.<br>$$<br>\begin{bmatrix}<br>   a_1 &amp; a_2 &amp; a_3 &amp; a_4 \\<br>   b_1 &amp; b_2 &amp; b_3 &amp; b_4 \\<br>   c_1 &amp; c_2 &amp; c_3 &amp; c_4 \\<br>   0 &amp; 0 &amp; 0 &amp; 1<br> \end{bmatrix}<br> \cdot<br> \begin{bmatrix}<br>   x_0 \<br>   y_0 \<br>   z_0 \<br>   0<br> \end{bmatrix}<br> =<br> \begin{bmatrix}<br>     a_1x_0 + a_2y_0 + a_3z_0  \<br>     b_1x_0 + b_2y_0 + b_3z_0 \<br>     c_1x_0 + c_2y_0 + c_3 z_0 \<br>     0<br> \end{bmatrix}<br>$$<br>然后用原来矩阵的最后一列减去这个向量.</p>
+<p>设新的中心点为 $x_0$, $y_0$, $z_0$.<br>$$<br>\begin{bmatrix}<br>   a_1 &amp; a_2 &amp; a_3 &amp; a_4 \\<br>   b_1 &amp; b_2 &amp; b_3 &amp; b_4 \\<br>   c_1 &amp; c_2 &amp; c_3 &amp; c_4 \\<br>   0 &amp; 0 &amp; 0 &amp; 1<br> \end{bmatrix}<br> \cdot<br> \begin{bmatrix}<br>   x_0 \\<br>   y_0 \\<br>   z_0 \\<br>   0<br> \end{bmatrix}<br> =<br> \begin{bmatrix}<br>     a_1x_0 + a_2y_0 + a_3z_0  \\<br>     b_1x_0 + b_2y_0 + b_3z_0 \\<br>     c_1x_0 + c_2y_0 + c_3 z_0 \\<br>     0<br> \end{bmatrix}<br>$$<br>然后用原来矩阵的最后一列减去这个向量.</p>
 <p>$$<br>\begin{bmatrix}<br>   a_1 &amp; a_2 &amp; a_3 &amp; a_4 - a_1x_0 - a_2y_0 - a_3z_0 \\<br>   b_1 &amp; b_2 &amp; b_3 &amp; b_4 - b_1x_0 - b_2y_0 - b_3z_0 \\<br>   c_1 &amp; c_2 &amp; c_3 &amp; c_4 - c_1x_0 - c_2y_0 - c_3z_0 \\<br>   0 &amp; 0 &amp; 0 &amp; 1<br> \end{bmatrix}<br>$$</p>
 <p>这些矩阵也就是 transformjs 所用到的, 大家可以阅读源码看到这些矩阵.</p>
 <p>另外, 还有一个 <code>perspective</code>, 其意义是透视, 视角. 在显示器中3D效果元素的透视点在显示器前方(近似于我们眼睛所在方位).</p>
