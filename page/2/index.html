@@ -255,6 +255,162 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/10/01/proxy-in-terminal/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="zhuscat">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="ZhusCafe">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/01/proxy-in-terminal/" itemprop="url">
+                  在终端中使用代理
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-01T19:52:17+08:00">
+                2016-10-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学以致用/" itemprop="url" rel="index">
+                    <span itemprop="name">学以致用</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/01/proxy-in-terminal/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/01/proxy-in-terminal/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一直使用 <code>shadowsocks</code> 翻墙，之前一直以为开了 <code>shadowsocks</code> 客户端的全局模式之后终端也是走代理的。近期要升级一下 <code>CocoaPods</code>，然后发现终端压根就没走代理，东西根本就没有下载下来。</p>
+<p>寻找了许多方法，最后采用了本文说的办法。</p>
+<h2 id="下载-ProxyChains-NG"><a href="#下载-ProxyChains-NG" class="headerlink" title="下载 ProxyChains-NG"></a>下载 ProxyChains-NG</h2><p>首先请确保你安装了 <code>homebrew</code>，没安装的话安装一下。</p>
+<p>接着在终端中执行等待安装结束</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew install proxychains-ng</div></pre></td></tr></table></figure>
+<h2 id="配置-ProxyChains-NG"><a href="#配置-ProxyChains-NG" class="headerlink" title="配置 ProxyChains-NG"></a>配置 ProxyChains-NG</h2><p>打开 <code>usr/local/etc/proxychains.conf</code></p>
+<p>在 [ProxyList] 下面加上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">socks5 127.0.0.1 1080</div></pre></td></tr></table></figure>
+<h2 id="关闭系统安装限制"><a href="#关闭系统安装限制" class="headerlink" title="关闭系统安装限制"></a>关闭系统安装限制</h2><p>重启电脑，开启时按住 <code>command + R</code>，然后点击实用工具 -&gt; 终端，输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ csrutil disable</div></pre></td></tr></table></figure>
+<p>再次重启电脑</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>在终端中输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ proxychains4 google.com</div></pre></td></tr></table></figure>
+<p>如果成功返回信息，则证明设置成功了。(以后要进行代理的命令就在前面加 <code>proxychains4</code> )。</p>
+<p>PS：跟墙斗争好累😫😫😫</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/09/26/async-validator/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1622,153 +1778,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/08/20/css-tips/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="zhuscat">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="ZhusCafe">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/20/css-tips/" itemprop="url">
-                  CSS 小知识（一）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-20T19:14:29+08:00">
-                2016-08-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学以致用/" itemprop="url" rel="index">
-                    <span itemprop="name">学以致用</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/08/20/css-tips/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/20/css-tips/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="px，em-与-rem"><a href="#px，em-与-rem" class="headerlink" title="px，em 与 rem"></a>px，em 与 rem</h1><p><code>px</code> 相对于显示器分辨率而言。</p>
-<p><code>em</code> 是相对长度单位，相当于当前对象内文本的尺寸。浏览器默认的字体行高是 <code>16px</code></p>
-<p><code>rem</code>相对于 <code>html</code> 根元素 (<code>root em</code>)</p>
-<h1 id="将文本变为不可选中"><a href="#将文本变为不可选中" class="headerlink" title="将文本变为不可选中"></a>将文本变为不可选中</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-webkit-user-select:none;</div><div class="line">-moz-user-select:none;</div><div class="line">-ms-user-select:none;</div><div class="line">user-select:none;</div></pre></td></tr></table></figure>
-<h1 id="优化字体渲染"><a href="#优化字体渲染" class="headerlink" title="优化字体渲染"></a>优化字体渲染</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">text-rendering: optimizeLegibility;</div><div class="line">-webkit-font-smoothing: antialiased;</div><div class="line">-moz-osx-font-smoothing: grayscale;</div></pre></td></tr></table></figure>
-<h1 id="设置全局字体"><a href="#设置全局字体" class="headerlink" title="设置全局字体"></a>设置全局字体</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/** 确保表单元素被设置所需字体 **/</div><div class="line">input, label, select, option, textarea, button, fieldset, legend &#123;</div><div class="line">    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1814,7 +1823,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-count">56</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1831,7 +1840,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">44</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
