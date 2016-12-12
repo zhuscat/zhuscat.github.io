@@ -255,6 +255,154 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/12/12/inherited-property-and-non-inherited-property/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="zhuscat">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="ZhusCafe">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/12/inherited-property-and-non-inherited-property/" itemprop="url">
+                  继承属性与非继承属性
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-12T16:37:39+08:00">
+                2016-12-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/12/12/inherited-property-and-non-inherited-property/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/12/inherited-property-and-non-inherited-property/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>CSS 属性可以分为继承属性与非继承属性。这决定着当某一属性没有提供值得时候，该属性的值为什么。</p>
+<h2 id="继承属性"><a href="#继承属性" class="headerlink" title="继承属性"></a>继承属性</h2><p>CSS 继承属性是在没有给元素指定某一属性的时候，该属性的值为属性父元素该值得计算值。</p>
+<p>看下面的代码，可以看到 <code>color</code> 是继承属性，所以 <code>span</code> 里面的颜色也变为蓝色，而 <code>border</code> 是非继承属性，所以 <code>span</code> 并没有边框。</p>
+<iframe scrolling="no" width="100%" height="300" src="http://jsfiddle.net/zhuscat/ovqkLxx7/embedded/html,css,result/light" frameborder="0" allowfullscreen></iframe>
+<p>下面是一个继承属性的列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">azimuth</div><div class="line">border-collapse</div><div class="line">border-spacing</div><div class="line">caption-side</div><div class="line">color</div><div class="line">cursor</div><div class="line">direction</div><div class="line">elevation</div><div class="line">empty-cells</div><div class="line">font-family</div><div class="line">font-size</div><div class="line">font-style</div><div class="line">font-variant</div><div class="line">font-weight</div><div class="line">font</div><div class="line">letter-spacing</div><div class="line">line-height</div><div class="line">list-style-image</div><div class="line">list-style-position</div><div class="line">list-style-type</div><div class="line">list-style</div><div class="line">orphans</div><div class="line">pitch-range</div><div class="line">pitch</div><div class="line">quotes</div><div class="line">richness</div><div class="line">speak-header</div><div class="line">speak-numeral</div><div class="line">speak-punctuation</div><div class="line">speak</div><div class="line">speech-rate</div><div class="line">stress</div><div class="line">text-align</div><div class="line">text-indent</div><div class="line">text-transform</div><div class="line">visibility</div><div class="line">voice-family</div><div class="line">volume</div><div class="line">white-space</div><div class="line">widows</div><div class="line">word-spacing</div></pre></td></tr></table></figure>
+<h2 id="非继承属性"><a href="#非继承属性" class="headerlink" title="非继承属性"></a>非继承属性</h2><p>非继承属性当没有指定值得时候，为该属性的初始值(可在CSS文档中看到一个属性初始值为什么)。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/12/11/koa/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1663,158 +1811,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/10/16/recent-problem/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="zhuscat">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="ZhusCafe">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/16/recent-problem/" itemprop="url">
-                  近期遇到的问题解决
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-16T11:53:13+08:00">
-                2016-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学以致用/" itemprop="url" rel="index">
-                    <span itemprop="name">学以致用</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/10/16/recent-problem/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/16/recent-problem/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>之前重装过 <code>homebrew</code>，又更新过系统，刚才用 <code>Eclipse</code> 跑一个项目出现了几个问题，这里是遇到问题的解决方案，供以后遇到问题时候快速查看。</p>
-<p><strong>1. 解决 Eclipse 中无法绑定 tomcat 8.5 的问题</strong></p>
-<p><a href="http://stackoverflow.com/questions/37024876/how-to-use-tomcat-8-5-x-and-tomee-7-x-with-eclipse" target="_blank" rel="external">How to use Tomcat 8.5.x and TomEE 7.x with Eclipse?</a></p>
-<p>修改 tomcat 的描述信息使 Eclipse 以为是 tomcat 8.0。</p>
-<p><strong>2. 解决 Eclipse 添加服务器 server name 一栏为空的问题</strong></p>
-<p><a href="http://stackoverflow.com/questions/14791843/eclipse-add-tomcat-7-blank-server-name" target="_blank" rel="external">Eclipse add Tomcat 7 blank server name</a></p>
-<p>Eclipse 的一个 BUG，通过删除特定的文件即可解决。</p>
-<p><strong>3. 解决 MySQL 无法启动问题</strong></p>
-<p><a href="http://stackoverflow.com/questions/5527676/warning-the-user-local-mysql-data-directory-is-not-owned-by-the-mysql-user" target="_blank" rel="external">Warning the user/local/mysql/data directory is not owned by the mysql user</a></p>
-<p><a href="http://stackoverflow.com/questions/24697558/cant-start-mysql-on-mavericks" target="_blank" rel="external">Can’t Start MySQL on Mavericks</a></p>
-<p>按照链接中的内容做就好了。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1860,7 +1856,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-count">58</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
