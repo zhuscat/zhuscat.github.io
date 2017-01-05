@@ -255,6 +255,151 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2017/01/05/solve-problem-cannot-overwrite-model-once-compiled/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="zhuscat">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="ZhusCafe">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/01/05/solve-problem-cannot-overwrite-model-once-compiled/" itemprop="url">
+                  mongoose Cannot overwrite model once compiled
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-05T14:35:12+08:00">
+                2017-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学以致用/" itemprop="url" rel="index">
+                    <span itemprop="name">学以致用</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/01/05/solve-problem-cannot-overwrite-model-once-compiled/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/05/solve-problem-cannot-overwrite-model-once-compiled/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>之前使用了 <a href="https://github.com/wssgcg1213/koa2-react-isomorphic-boilerplate" target="_blank" rel="external">koa2-react-isomorphic-boilerplate</a> 作为编写前后端同构应用，但是使用这个 boilerplate 的时候出现了一个问题：我使用了一个库 <code>mongoose</code>，每次在 <code>development</code> 模式下修改代码的时候就会抛出错误，错误原因就是 <code>Cannot overwrite model once compiled.</code>，然后只能自己重启服务器。 </p>
+<p>然后就就想着要不就修改代码之后重启服务器吧。之后又参考了几个前后端同构的 boilerplate，自己写了个 boilerplate，大概就是服务器端代码修改时候自动重启，客户端代码修改进行热替换。然而，这带来的一个问题是客户端代码修改之后，当刷新页面时候服务端返回的html与客户端生成的是不一致的，在这个 <a href="https://github.com/chikara-chan/react-isomorphic-boilerplate/issues/1#issuecomment-270562613" target="_blank" rel="external">issue</a> 中我有提到。接着我突然想到，<a href="https://github.com/wssgcg1213/koa2-react-isomorphic-boilerplate" target="_blank" rel="external">koa2-react-isomorphic-boilerplate</a> 是可以在客户端代码修改后也修改服务器端返回的代码的，具体实现就是通过清除 <code>require</code> 缓存，至于为什么 <code>mongoose</code> 会报这个重复定义的错呢，我再次查阅了一些资料，发现 <code>mongoose</code> 会缓存 <code>model</code> 和 <code>modelSchema</code> 在 <code>mongoose.models</code> 和 <code>mongoose.modelSchemas</code> 上面，当清除 <code>require</code> 的缓存之后，<code>mongoose.models</code> 里面的东西还在，然后再次 <code>require</code> 模型的时候就报错了。</p>
+<p>因此，我通过在监听文件变动的代码里再加上下面的代码来清除 <code>mongoose</code> 中的缓存，成功地解决了这个问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Object</span>.keys(mongoose.models).forEach(<span class="function"><span class="keyword">function</span>(<span class="params">model</span>) </span>&#123;</div><div class="line">  <span class="keyword">delete</span> mongoose.models[model];</div><div class="line">&#125;)</div><div class="line"><span class="built_in">Object</span>.keys(mongoose.modelSchemas).forEach(<span class="function"><span class="keyword">function</span>(<span class="params">schema</span>) </span>&#123;</div><div class="line">  <span class="keyword">delete</span> mongoose.modelSchemas[schema];</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2017/01/04/solve-problem-property-key-of-objectproperty/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1603,161 +1748,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/11/07/maintainable-javascript/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="zhuscat">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="ZhusCafe">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/07/maintainable-javascript/" itemprop="url">
-                  《编写可维护的 JavaScript》读后感
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-07T19:40:38+08:00">
-                2016-11-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/读后感/" itemprop="url" rel="index">
-                    <span itemprop="name">读后感</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/11/07/maintainable-javascript/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/07/maintainable-javascript/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>今天读了《编写可维护的 JavaScript》，基本上是用很快的速度把这本书看完了。</p>
-<p>不得不感叹一下前端变化之快，书中很多东西现在都有了变化。这本书比较适合 JavaScript 的初学者，很多内容都是老生常谈的了。比如缩进、是否使用分号、变量命名等等，这些东西其实在项目中开启 ESLint 或者 JSLint 之后多写点代码就有养成习惯了。</p>
-<p>第二部分的内容是编程实践，比如与 HTML 分离，与 CSS 分离等等也是我们经常看到的内容。还有就是避免使用全局变量，事件处理隔离应用逻辑等等。总之，第二部分我认为是本书比较值得看的地方，不过大部分内容页都是从其他书中看过了。</p>
-<p>第三部分，也就是最后一部分，讲的是自动化。这一部分内容也许是跟现在差异最大的地方了。比如构建工具书中介绍的是 Ant ，而 Ant 这工具我从来没有使用过（其实之前我根本不知道）。现在一般都会使用 Grunt 或者 Gulp 吧？校验的话我现在用的是 ESLint，使用的测试工具也与书中不同。</p>
-<p>总的来说，之前我给这本书的期望值太高了。这本书比较适合平时写代码不太规范的人或者 JavaScript 初学者，看了之后应该能有许多收获。</p>
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/07/maintainable-javascript/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1798,7 +1793,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">60</span>
+              <span class="site-state-item-count">61</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1815,7 +1810,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">58</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
