@@ -362,7 +362,7 @@
 <p>动画组件参考了 React 官方的实现和 React-Component 的 Animate 组件，这两个组件的实现思路大同小异。</p>
 <a id="more"></a>
 <p>假设这个组件的名称为 <code>Animator</code> ，使用形式类似于下面这样：</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;Animator&gt;</div><div class="line">  &#123;<span class="keyword">this</span>.props.items.map(<span class="function"><span class="params">i</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;Item key=&#123;i.key&#125;&gt;</div><div class="line">        i.name</div><div class="line">      &lt;/Item&gt;</div><div class="line">    );</div><div class="line">  &#125;)&#125;</div><div class="line">&lt;<span class="regexp">/Animator&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;Animator&gt;</div><div class="line">  &#123;<span class="keyword">this</span>.props.items.map(<span class="function"><span class="params">i</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">Item</span> <span class="attr">key</span>=<span class="string">&#123;i.key&#125;</span>&gt;</span></span></div><div class="line">        i.name</div><div class="line">      <span class="tag">&lt;/<span class="name">Item</span>&gt;</span></div><div class="line">    );</div><div class="line">  &#125;)&#125;</div><div class="line">&lt;<span class="regexp">/Animator&gt;</span></div></pre></td></tr></table></figure>
 <p>在 <code>Animator</code> 包裹后，当新插入 item，删除 item 的时候，会有动画产生。</p>
 <p>主要的思路是，<code>Animator</code> 组件内部有一个 <code>state</code> 来保存将要渲染的 children，当有新的 children 进来的时候（以 <code>props</code> 的方式，会将 <code>state</code> 中的 children 和新的 children 进行合并，这期间(即 <code>componentWillReceiveProps</code>），又要决定哪些元素是要进行入场动画的，哪些元素是要进行出场动画的，然后重新渲染，渲染结束之后，再对 children 进行动画操作。</p>
 <p>简单来说， <code>Animator</code> 提供了一个缓冲区，在元素实际上是要删除的时候，<code>Animator</code> 通过 <code>state</code> 将其保存住，在做完动画之后才真正地删除。</p>
@@ -489,7 +489,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-count">63</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -506,7 +506,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
