@@ -255,6 +255,172 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2017/07/18/thoughts-on-styled-components/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="zhuscat">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="ZhusCafe">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/18/thoughts-on-styled-components/" itemprop="url">
+                  Thoughts on Styled Components
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-18T08:34:06+08:00">
+                2017-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/想法/" itemprop="url" rel="index">
+                    <span itemprop="name">想法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/07/18/thoughts-on-styled-components/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/18/thoughts-on-styled-components/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>随着组件化的盛行，一些人开始使用 CSS in JS 的方案，目前比较流行的就是 Styled Components，为什么这种方案会被一些人接受并使用呢？我想从动机出发谈谈这个方案。</p>
+<p>在组件化的思维下，很多人会发现，自己写的样式只会在某个组件下使用，比如我写了一个特定的 Button，那么这些样式只会在这个 Button 下使用，这个样式不会给一个列表项，不会给一个标题，在这种情况下，下面这种代码是很常见的：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Button</span> <span class="attr">className</span>=<span class="string">"btn"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">Button</span> <span class="attr">className</span>=<span class="string">"btn btn--primary"</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这就带来了一个问题，为什么命名我的样式只会给一个特定的组件使用，我却要维护从组件到样式关系的一个映射呢？能不能去除这一层关系？</p>
+<p>根据 Styled Components 的方案，最终代码就会变成下面这样</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Button</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">Button</span> <span class="attr">primary</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>另一个 CSS in JS 的优点是，可以发挥出 JS 的力量。比如说变量，循环等等，这些能力全部统统拥有，不再需要 Less，Sass 等等 CSS 预编译器了。</p>
+<p>至于 CSS in JS，这里特指 Styled Components 这种方案到底好不好，这里就仁者见仁，智者见智了。虽然目前我还没有用到实践中去，但我认为这种方案还是不错的。</p>
+<p>首先， Styled Components 并不是让我们去写一个类似 <code>style</code> 对象的东西，在 Styled Components 中，我们所写都是标准的 CSS 语法，甚至支持 CSS 动画，媒体查询等，根据 Styled Components 的原理，其最终也是生成一个类插入到 <code>head</code> 里面去。</p>
+<p>另外，有了 JS 的帮助，我们可以拥有那些 CSS 预处理器拥有的大部分功能。</p>
+<p>另外，Styled Components 所提供的一个 <code>ThemeProvider</code> 可以方便我们定制主题，先看一下现在主流的组件库是怎么定制主题的，以 Ant Design 为例，要定制主题，有两种方式，一个是在 <code>package.json</code> 中指定 <code>theme</code> 字段，当然，这是一个自定义字段，需要<a href="https://ant.design/docs/react/customize-theme-cn" target="_blank" rel="external">相关的工具</a>去对其进行解析 ，另一种方式就是覆盖 less 变量，不管哪种方式，都不显得那么简洁。但是使用 Styled Components，我们只需要在 <code>ThemeProvider</code> 中提供相关变量就好了，这样，一个组件库对外提供的是 JS 模块，我们使用 JS 对其进行配置，在配置的便捷性上高了很多。</p>
+<p>当然，也有人认为这种方案不够好，比如 <a href="https://medium.com/@gajus/stop-using-css-in-javascript-for-web-development-fa32fb873dcc" target="_blank" rel="external">Stop using CSS in JavaScript for web development – Gajus Kuizinas – Medium</a></p>
+<p>而我能想到的几个缺点是：</p>
+<ol>
+<li>JS 与 CSS 无法分离成两个文件，实际中可能会有 JS 改变但 CSS 不变的情形，这样的话，无法有效利用缓存。</li>
+<li><del>另外就是覆写样式不方便，虽然上面我夸赞了下 Styled Components 的主题定制功能，但是对于一些精细的样式改变可能就会显得不方便，比如说我有一个组件库，里面又一个 Table 组件，我可能会想改变 Table 组件下一行的边框，高度，颜色等等等等。这个时候必须暴露一些 props 出来，但显然无法照顾到方方面面。而使用传统方案只需要找到一行的那个类名就行样式覆写就好。</del> 发现 Styled Components 同样可以定义生成的类名，但我不知道通过这种方式再去写对应类名的 CSS 好不好，假如使用了 Styled Components，我肯定不想再写对应的 CSS，这样感觉有些混乱。</li>
+</ol>
+<h2 id="深入阅读"><a href="#深入阅读" class="headerlink" title="深入阅读"></a>深入阅读</h2><ol>
+<li><a href="https://github.com/styled-components/polished" target="_blank" rel="external">GitHub - styled-components/polished: A lightweight toolset for writing styles in JavaScript ✨</a></li>
+<li><a href="https://github.com/styled-components/styled-components" target="_blank" rel="external">GitHub - styled-components/styled-components: Visual primitives for the component age 💅</a></li>
+<li><a href="https://www.youtube.com/watch?v=EkPcGS4TzdQ" target="_blank" rel="external">Ryan’s Random Thoughts on Inline Styles - YouTube</a></li>
+<li><a href="https://www.youtube.com/watch?v=XR6eM_5pAb0" target="_blank" rel="external">ColdFront16 • Glenn Maddern: The Future of Reusable CSS - YouTube</a></li>
+<li><a href="https://github.com/hax/hax.github.com/issues/22" target="_blank" rel="external">如何看待《React: CSS in JS》？ · Issue #22 · hax/hax.github.com · GitHub</a></li>
+<li><a href="https://medium.com/@gajus/stop-using-css-in-javascript-for-web-development-fa32fb873dcc" target="_blank" rel="external">Stop using CSS in JavaScript for web development – Gajus Kuizinas – Medium</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2017/07/14/does-tree-shaking-work/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1690,154 +1856,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/12/12/inherited-property-and-non-inherited-property/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="zhuscat">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="ZhusCafe">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/12/inherited-property-and-non-inherited-property/" itemprop="url">
-                  继承属性与非继承属性
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-12T16:37:39+08:00">
-                2016-12-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">学习笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/12/12/inherited-property-and-non-inherited-property/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/12/inherited-property-and-non-inherited-property/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CSS 属性可以分为继承属性与非继承属性。这决定着当某一属性没有提供值得时候，该属性的值为什么。</p>
-<h2 id="继承属性"><a href="#继承属性" class="headerlink" title="继承属性"></a>继承属性</h2><p>CSS 继承属性是在没有给元素指定某一属性的时候，该属性的值为属性父元素该值得计算值。</p>
-<p>看下面的代码，可以看到 <code>color</code> 是继承属性，所以 <code>span</code> 里面的颜色也变为蓝色，而 <code>border</code> 是非继承属性，所以 <code>span</code> 并没有边框。</p>
-<iframe scrolling="no" width="100%" height="300" src="http://jsfiddle.net/zhuscat/ovqkLxx7/embedded/html,css,result/light" frameborder="0" allowfullscreen></iframe>
-<p>下面是一个继承属性的列表：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">azimuth</div><div class="line">border-collapse</div><div class="line">border-spacing</div><div class="line">caption-side</div><div class="line">color</div><div class="line">cursor</div><div class="line">direction</div><div class="line">elevation</div><div class="line">empty-cells</div><div class="line">font-family</div><div class="line">font-size</div><div class="line">font-style</div><div class="line">font-variant</div><div class="line">font-weight</div><div class="line">font</div><div class="line">letter-spacing</div><div class="line">line-height</div><div class="line">list-style-image</div><div class="line">list-style-position</div><div class="line">list-style-type</div><div class="line">list-style</div><div class="line">orphans</div><div class="line">pitch-range</div><div class="line">pitch</div><div class="line">quotes</div><div class="line">richness</div><div class="line">speak-header</div><div class="line">speak-numeral</div><div class="line">speak-punctuation</div><div class="line">speak</div><div class="line">speech-rate</div><div class="line">stress</div><div class="line">text-align</div><div class="line">text-indent</div><div class="line">text-transform</div><div class="line">visibility</div><div class="line">voice-family</div><div class="line">volume</div><div class="line">white-space</div><div class="line">widows</div><div class="line">word-spacing</div></pre></td></tr></table></figure>
-<h2 id="非继承属性"><a href="#非继承属性" class="headerlink" title="非继承属性"></a>非继承属性</h2><p>非继承属性当没有指定值得时候，为该属性的初始值(可在CSS文档中看到一个属性初始值为什么)。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1883,7 +1901,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">67</span>
+              <span class="site-state-item-count">68</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1891,7 +1909,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1900,7 +1918,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">68</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -255,6 +255,176 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/08/25/apply-call-and-bind/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="zhuscat">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="ZhusCafe">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/25/apply-call-and-bind/" itemprop="url">
+                  apply, call 与 bind
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-25T15:45:29+08:00">
+                2016-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/08/25/apply-call-and-bind/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/25/apply-call-and-bind/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这三个函数都与改变函数执行时的上下文有关。其又分为两类：</p>
+<ol>
+<li><code>Function.prototype.apply</code> 与 <code>Function.prototype.call</code> 为一类。它们会立即调用函数。</li>
+<li><code>Function.prototype.bind</code>  为一类，其会返回一个绑定了作用域的函数而不立即被调用。</li>
+</ol>
+<h2 id="Function-prototype-apply"><a href="#Function-prototype-apply" class="headerlink" title="Function.prototype.apply"></a>Function.prototype.apply</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fun.apply(thisArg, [argsArray])</div></pre></td></tr></table></figure>
+<p><code>apply</code> 接收两个参数第一个是要绑定给 <code>this</code> 的值，第二个是参数数组（array-like object）。</p>
+<p>作用：</p>
+<ol>
+<li>绑定作用域</li>
+<li>方便一些函数的调用（诸如 <code>Math.max</code>)</li>
+</ol>
+<p>绑定作用域相信就不用详细说明了，简单的说就是指定函数内部 <code>this</code> 的指向。</p>
+<p>这里举一个方便函数调用的例子，大家知道，<code>Math.max</code> 接收一系列数字作为参数，但是不接收数组，使用 <code>apply</code> 就可以做到传递数组了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> maxNumber = <span class="built_in">Math</span>.max.apply(<span class="literal">null</span>, [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]) <span class="comment">// output: 10</span></div></pre></td></tr></table></figure>
+<p>不过，在 ES2015 中这应该不是问题了，因为可以使用扩展运算符（<code>...</code></p>
+<p>）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> maxNumber = <span class="built_in">Math</span>.max(...[<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]) <span class="comment">// output: 10</span></div></pre></td></tr></table></figure>
+<h2 id="Function-prototype-call"><a href="#Function-prototype-call" class="headerlink" title="Function.prototype.call"></a>Function.prototype.call</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fun.call(thisArg[, arg1[, arg2[, ...]]])</div></pre></td></tr></table></figure>
+<p><code>call</code> 的作用与 <code>apply</code> 完全相同，只是使用方法有所不同，需要将参数一个一个传入。另外由于 ES2015 中的扩展运算符，似乎 <code>call</code> 和 <code>apply</code> 在在任何场景都可以互相替换了。个人认为使用哪一个函数看个人习惯了。</p>
+<h2 id="Function-prototype-bind"><a href="#Function-prototype-bind" class="headerlink" title="Function.prototype.bind"></a>Function.prototype.bind</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fun.bind(thisArg[, arg1[, arg2[, ...]]])</div></pre></td></tr></table></figure>
+<p><code>bind</code> 与前两个函数不同之处在于，前两个函数会立即执行，而 <code>bind</code> 做的仅仅是绑定作用域，然后供之后调用。</p>
+<p>关于 <code>bind</code> 还有一点值得说明的是，当一个函数调用 <code>bind</code> 绑定 <code>thisArg</code> 之后，企图再去调用 <code>bind</code> 去绑定另一个上下文，或者去调用 <code>apply</code> 或者 <code>call</code> 来改变上下文是没有用的。</p>
+<p>来看一下 <code>bind</code> 的简单实现（粗略实现，实际实现内容更多）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Function</span>.prototype.bind = <span class="function"><span class="keyword">function</span>(<span class="params">ctx, ...formerArgs</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> _this = <span class="keyword">this</span>;</div><div class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">...laterArgs</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> _this.apply(ctx, formerArgs.concat(laterArgs));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当第一次调用 <code>bind</code> 之后就形成了一个闭包，再改变上下文也不会改变最后执行的结果。</p>
+<h2 id="更新记录"><a href="#更新记录" class="headerlink" title="更新记录"></a>更新记录</h2><ol>
+<li>2016 年 10 月 18 日增加 <code>bind</code> 的描述。</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/08/21/promise/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1665,155 +1835,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://zhuscat.com/2016/06/25/read-folding-cell/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="zhuscat">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="ZhusCafe">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="ZhusCafe" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/25/read-folding-cell/" itemprop="url">
-                  学习 FoldingCell 笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-25T13:20:08+08:00">
-                2016-06-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">学习笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/06/25/read-folding-cell/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/25/read-folding-cell/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><code>@IBInspectable</code> 加了这个之后的属性可以在 storyboard 中显示</li>
-<li><code>m34</code> 透视效果</li>
-<li>改变了 <code>anchorPoint</code>，如果是使用 <code>AutoLayout</code> 是要对约束做相应的修改，如一下场景，有一个视图 view1 ，有一个视图view2，view2是 view1 的 subview，view2 的约束是顶部在 view1 的顶部，左边在 view1 的左边，右边在 view1 的右边，高度为 view1 的高度，如果给 view2 设置 <code>anchorPoint</code> 为 <code>(0.5, 1)</code>，则要增加 view2 上方的高度为其高度的二分之一</li>
-<li>可以给 <code>CABasicAnimation</code> 设置代理，分别在动画开始和动画结束时做一些事情。</li>
-<li>对于 <code>CAAnimation</code> 的回调可以用 <code>dispatch_after</code> 实现，计算好动画结束的时间</li>
-<li><code>CALayer</code> 的 <code>shouldRasterize</code> 在开启后会将 <code>CALayer</code> 光栅化为 bitmap，适合那些内容不变的 layer</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1859,7 +1880,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">67</span>
+              <span class="site-state-item-count">68</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1867,7 +1888,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1876,7 +1897,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-count">68</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
