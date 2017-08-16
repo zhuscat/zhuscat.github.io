@@ -505,6 +505,7 @@
 <li>POST</li>
 </ol>
 <p>二、HTTP的头信息不超出以下几种字段</p>
+<p>（不包括 User Agent 自动增加的头部，如 <code>Connection</code>，<code>User-Agent</code>，详情见<a href="https://fetch.spec.whatwg.org/#forbidden-header-name" target="_blank" rel="external">forbidden-header-name</a>）</p>
 <ol>
 <li>Accept</li>
 <li>Accept-Language</li>
@@ -520,7 +521,7 @@
 <figure class="highlight http"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 <span class="number">200</span> OK</div><div class="line"><span class="attribute">Access-Control-Allow-Origin</span>: http://localhost:6006</div><div class="line"><span class="attribute">Access-Control-Allow-Credentials</span>: true</div><div class="line"><span class="attribute">Access-Control-Expose-Headers</span>: X-Requested-With</div></pre></td></tr></table></figure>
 <p>(1) <code>Access-Control-Allow-Origin</code></p>
 <p>表明允许的 <code>Origin</code>，当时 <code>*</code> 的时候表示接受任何域的请求。</p>
-<p>(2) <code>Acess-Control-Allow-Credentials</code></p>
+<p>(2) <code>Access-Control-Allow-Credentials</code></p>
 <p>表明是否允许发送 <code>cookie</code>。允许下添加 <code>Access-Control-Allow-Credentials: true</code>，否则不包含该字段，该字段不能设置为 <code>false</code>。如果要浏览器发<code>cookie</code>，还需要浏览器方面做出一些配置。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">xhr.withCredentials = <span class="literal">true</span></div></pre></td></tr></table></figure>
 <p>这样就可以发送 <code>cookie</code> 了，另外需要注意的是，如果要发送 <code>cookie</code>，服务器返回的 <code>Access-Control-Allow-Origin</code> 不能是 <code>*</code>，必须是确定的域名。<code>cookie</code> 的传送依然遵循同源政策。</p>
@@ -555,6 +556,9 @@
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
 <li><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">跨域资源共享 CORS 详解</a></li>
 <li><a href="http://tech.jandou.com/cross-domain.html" target="_blank" rel="external">前端跨域及其解决方案</a></li>
+</ol>
+<h3 id="更新记录"><a href="#更新记录" class="headerlink" title="更新记录"></a>更新记录</h3><ol>
+<li>2017 年 8 月 16 日修改对简单请求的描述</li>
 </ol>
 
           
