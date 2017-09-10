@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="学习笔记,前端,JavaScript,图表," />
+  <meta name="keywords" content="前端,JavaScript,学习笔记,图表," />
 
 
 
@@ -334,6 +334,13 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/08/07/highchart-basic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/07/highchart-basic/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -443,11 +450,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
-          
             <a href="/tags/前端/" rel="tag"># 前端</a>
           
             <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
           
             <a href="/tags/图表/" rel="tag"># 图表</a>
           
@@ -495,6 +502,13 @@
 
           
   <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
     
   </div>
 
@@ -768,10 +782,35 @@
 
   
 
+    <script type="text/javascript">
+      var disqus_shortname = 'zhuscat';
+      var disqus_identifier = '2016/08/07/highchart-basic/';
+
+      var disqus_title = "highcharts 入门";
 
 
+      function run_disqus_script(disqus_script) {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
 
-	
+      run_disqus_script('count.js');
+
+      
+        var disqus_config = function () {
+            this.page.url = disqus_url;
+            this.page.identifier = disqus_identifier;
+            this.page.title = disqus_title;
+        };
+        run_disqus_script('embed.js');
+      
+
+    </script>
+  
+
 
 
 
