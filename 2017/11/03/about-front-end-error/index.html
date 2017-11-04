@@ -95,7 +95,7 @@
 123window.onerror = function(msg, source, row, col, error) &amp;#123;  // 处理各种事情，如错误上报&amp;#125;
 另外，如果在函数中 return true 的话，错误不会继续向上抛出，也就是不">
 <meta property="og:image" content="http://7xpc78.com1.z0.glb.clouddn.com/about-front-end-error/img-404-error.png">
-<meta property="og:updated_time" content="2017-11-03T16:15:39.000Z">
+<meta property="og:updated_time" content="2017-11-04T04:28:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端错误小知识">
 <meta name="twitter:description" content="window.onerrorwindow.onerror 是顶层的错误处理函数，大部分抛出的未被处理的错误可以在这里进行统一处理。如下所示：
@@ -385,7 +385,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(event)</div><div class="line">&#125;, <span class="literal">true</span>)</div></pre></td></tr></table></figure>
 <p>注意第三个参数，即在捕获阶段进行日志的捕获，这种方案的缺点是只能知道这个错误发生了，但是错误发生的原因什么的无法进一步知道，错误的内容大概如下所示（请求不存在的图片资源返回了404）：</p>
 <p><img src="http://7xpc78.com1.z0.glb.clouddn.com/about-front-end-error/img-404-error.png" alt="img-404-error"></p>
-<p>未完待续…</p>
+<h2 id="One-more-thing"><a href="#One-more-thing" class="headerlink" title="One more thing"></a>One more thing</h2><p>现在一般会对代码进行压缩混淆，这样一来代码中出错得到的名称、行数、列数等信息会和源代码中有出入，这个时候可以一同生成 <code>sourcemap</code>，然后可以通过压缩文件报出的错误信息和 <code>sourcemap</code> 结合来得出源代码中相应的信息。</p>
 <h2 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h2><ol>
 <li><a href="https://github.com/joeyguo/blog/issues/13" target="_blank" rel="external">脚本错误量极致优化-监控上报与Script error</a></li>
 <li><a href="https://github.com/joeyguo/blog/issues/14" target="_blank" rel="external">脚本错误量极致优化-让脚本错误一目了然</a></li>
@@ -607,7 +607,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#window-onerror"><span class="nav-number">1.</span> <span class="nav-text">window.onerror</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-错误的统一处理"><span class="nav-number">2.</span> <span class="nav-text">Promise 错误的统一处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML-中网络请求错误"><span class="nav-number">3.</span> <span class="nav-text">HTML 中网络请求错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进一步阅读"><span class="nav-number">4.</span> <span class="nav-text">进一步阅读</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#window-onerror"><span class="nav-number">1.</span> <span class="nav-text">window.onerror</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-错误的统一处理"><span class="nav-number">2.</span> <span class="nav-text">Promise 错误的统一处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML-中网络请求错误"><span class="nav-number">3.</span> <span class="nav-text">HTML 中网络请求错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#One-more-thing"><span class="nav-number">4.</span> <span class="nav-text">One more thing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进一步阅读"><span class="nav-number">5.</span> <span class="nav-text">进一步阅读</span></a></li></ol></div>
             
 
           </div>
