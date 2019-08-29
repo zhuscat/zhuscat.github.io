@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{174:function(o){o.exports={pages:[{componentChunkName:"component---src-pages-about-index-js",jsonName:"about-f34",path:"/about/"}],dataPaths:{"about-f34":"636/path---about-f-34-4c2-qoYfzmDk3e4kySK0qwsPkU3aF4","sq--src-components-layout-js":1097489062}}}}]);
-//# sourceMappingURL=pages-manifest-89b7dfcab002227ff96a.js.map
