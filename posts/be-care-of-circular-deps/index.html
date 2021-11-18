@@ -192,6 +192,50 @@ exports<span class="token punctuation">.</span>b <span class="token operator">=<
 <span class="token keyword">const</span> b <span class="token operator">=</span> _a<span class="token punctuation">.</span>a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
 exports<span class="token punctuation">.</span>b <span class="token operator">=</span> b<span class="token punctuation">;</span></code></pre></div>
 <p>最终结果就不是报错，而是 <code class="language-text">NaN</code> 了。</p>
+<h2>真实应用的案例</h2>
+<p>最近在改代码的时候，发现一个循环依赖的问题，不过问题没有暴露出来，原因是 <code class="language-text">moduleConfig/loadConfigs</code> 恰巧执行的代码链路会走一个异步的流程，那个时候模块就构建完成了，但如果后续代码逻辑更改然后走同步流程了呢，那个时候就出BUG了。</p>
+<p>大概几个重要文件分布是这样的：</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// modules/apis/flyio/index.js</span>
+<span class="token comment">// flyio 依赖了 api-sign</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> sign <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@/modules/utils/api-sign'</span>
+<span class="token comment">//...</span>
+<span class="token keyword">export</span> <span class="token punctuation">{</span> rpConfig <span class="token punctuation">}</span></code></pre></div>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// modules/utils/api-sign.js</span>
+<span class="token comment">// ！！！api-sign 依赖了 store</span>
+<span class="token keyword">import</span> store <span class="token keyword">from</span> <span class="token string">'./store.js'</span></code></pre></div>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// main.js</span>
+<span class="token comment">// 入口文件</span>
+<span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.vue'</span>
+<span class="token keyword">import</span> store <span class="token keyword">from</span> <span class="token string">'./store.js'</span></code></pre></div>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// 在 ./App.vue 中</span>
+<span class="token comment">// ！！！@/modules/apis/echobox 依赖链路中有 flyio、api-sign</span>
+<span class="token keyword">import</span> ApiEchobox <span class="token keyword">from</span> <span class="token string">'@/modules/apis/echobox'</span></code></pre></div>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// store.js</span>
+<span class="token keyword">import</span> registerStoreModules <span class="token keyword">from</span> <span class="token string">'@/modules/installers/register-store-modules'</span>
+
+<span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token function">createStore</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">registerStoreModules</span><span class="token punctuation">(</span>store<span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> store</code></pre></div>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// @/modules/installers/register-store-modules</span>
+<span class="token comment">// ！！！依赖链路中有 flyio</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">(</span><span class="token parameter">store<span class="token punctuation">,</span> <span class="token punctuation">{</span> useModules <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">...</span>requiredModuleOptions <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  store<span class="token punctuation">.</span><span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token string">'moduleConfig/loadConfigs'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'default'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>让我们看一下依赖情况，require 表示前面的文件依赖后面的文件</p>
+<div class="gatsby-highlight" data-language="text"><pre class="language-text"><code class="language-text">main.js require App.vue
+App.vue require modules/apis/echobox.js
+modules/apis/echobox.js require modules/apis/flyio.js
+modules/apis/flyio.js require modules/utils/api-sign.js
+modules/utils/api-sign.js require store/index.js &lt;- store/index ！！！第一次导入是由 api-sign.js 导入的
+store/index.js require modules/installers/register-store-modules.js
+modules/installer/register-store-modules.js require modules/stores/config.js
+modules/stores/config.js require modules/apis/config.js
+modules/apis/config.js require modules/apis/flyio.js &lt;- flyio在前面由 echobox 已经加载过了，不过 exports 还没构建完成，不过会直接返回模块，此时 exports = {}
+...
+...
+然后在 register-store-modules里执行了 moduleConfig 的 loadConfigs，也就是执行了 config.js 中的方法，但是此时 flyio.js exports 还是 {}，由此报错</code></pre></div>
+<p>这里 <code class="language-text">api-sign</code> 模块作为 API 层的一个模块，不应该依赖 <code class="language-text">store</code> 模块。</p>
 <h2>如何避免</h2>
 <p>实践上，良好的架构设计。</p>
 <p>工具上，可以利用一些辅助工具，如 <a href="https://github.com/aackerman/circular-dependency-plugin">circular-dependency-plugin</a></p>
